@@ -14,3 +14,5 @@ class HotelModel:
             'diaria': self.diaria,
             'cidade': self.cidade
         }
+    
+    
