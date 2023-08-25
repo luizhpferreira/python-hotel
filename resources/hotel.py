@@ -56,4 +56,4 @@ class Hotel(Resource):
         if len(hoteis) < initial_count:
             return {'message': 'Hotel deleted.'}
         else:
-            return {'error': 'Hotel not found.'}
+            return {'error': 'Hotel not found.'}, 404
