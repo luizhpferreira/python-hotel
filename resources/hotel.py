@@ -47,5 +47,13 @@ class Hotel(Resource):
 
     def delete(self, hotel_id):
         global hoteis
+        initial_count = len(hoteis)  # Captura o número inicial de hotéis na lista
+
+        # Filtra os hotéis, removendo aqueles com o ID especificado
         hoteis = [hotel for hotel in hoteis if hotel['hotel_id'] != hotel_id]
-        return {'message.': 'Hotel deleted.'}
+
+        # Verifica se o número de hotéis na lista diminuiu após a tentativa de exclusão
+        if len(hoteis) < initial_count:
+            return {'message': 'Hotel deleted.'}
+        else:
+            return {'error': 'Hotel not found.'}
