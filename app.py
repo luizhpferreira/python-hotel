@@ -4,8 +4,14 @@ from resources.hotel import Hoteis, Hotel
 from flask_cors import CORS  # Importe o CORS
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 api = Api(app)
 CORS(app)
+
+@app.before_first_request
+def cria_banco():
+    banco.create_all()
 
     
 api.add_resource(Hoteis, '/hoteis')
@@ -31,4 +37,6 @@ def gerenciar_hoteis():
         return jsonify({"hoteis": hoteis}), 200
 
 if __name__ == '__main__':
+    from sql_alchemy import banco
+    banco.init_app(app)
     app.run(debug=True)
