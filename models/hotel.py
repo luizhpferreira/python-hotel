@@ -45,4 +45,6 @@ class HotelModel(banco.Model):
     def delete_hotel(self):
         banco.session.delete(self)
         banco.session.commit()
+
+    
     
