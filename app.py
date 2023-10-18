@@ -67,6 +67,21 @@ def criar_usuario():
     banco.session.commit()
 
     return jsonify({'message': 'User created successfully'}), 201
+
+@app.route('/usuarios/<int:user_id>', methods=['DELETE'])
+def deletar_usuario(user_id):
+    # Tente encontrar o usuário no banco de dados
+    user = UserModel.query.filter_by(id=user_id).first()
+
+    # Se o usuário não for encontrado, retorne uma mensagem de erro
+    if not user:
+        return jsonify({'message': 'Usuário não encontrado'}), 404
+
+    # Caso contrário, delete o usuário do banco de dados
+    banco.session.delete(user)
+    banco.session.commit()
+
+    return jsonify({'message': 'Usuário deletado com sucesso'}), 200
     
 api.add_resource(Hoteis, '/hoteis')
 api.add_resource(Hotel, '/hoteis/<string:hotel_id>')
