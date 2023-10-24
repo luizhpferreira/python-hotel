@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_restful import Api
+from models.hotel import UserModel
 from resources.hotel import Hoteis, Hotel
 from flask_cors import CORS  # Importe o CORS
 from flask_jwt_extended import JWTManager, create_access_token
@@ -16,7 +17,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'sua_chave_secreta'
 jwt = JWTManager(app)
 api = Api(app)
-
 bcrypt = Bcrypt(app)
 CORS(app)
 
@@ -24,7 +24,27 @@ CORS(app)
 def cria_banco():
     banco.create_all()
 
-   
+api.add_resource(Hoteis, '/hoteis')
+api.add_resource(Hotel, '/hoteis/<string:hotel_id>')
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+
+
+hoteis = []
+@app.route('/hoteis', methods=['GET', 'POST'])
+def gerenciar_hoteis():
+    if request.method == 'POST':
+        # Lidar com a solicitação POST para criar um novo hotel
+        novo_hotel = request.json  # Os dados do novo hotel são enviados como JSON
+
+        # Adicione o novo hotel à lista de hotéis
+        hoteis.append(novo_hotel)
+
+        # Você pode retornar uma resposta de sucesso, se desejar
+        return jsonify({"message": "Hotel adicionado com sucesso"}), 201
+
+    elif request.method == 'GET':
+        # Lidar com a solicitação GET para obter a lista de hotéis
+        return jsonify({"hoteis": hoteis}), 200
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -39,18 +59,7 @@ def login():
         return {'access_token': access_token}, 200
     else:
         return {'message': 'Usuário ou senha incorretos'}, 401
-    
-class UserModel(banco.Model):
-    __tablename__ = 'usuarios'
-
-    id = banco.Column(banco.Integer, primary_key=True)
-    username = banco.Column(banco.String(80), unique=True, nullable=False)
-    password = banco.Column(banco.String(128), nullable=False)
-
-    def __init__(self, username, password):
-        self.username = username
-        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
-    
+      
 @app.route('/usuarios', methods=['POST'])
 def criar_usuario():
     data = request.get_json()
@@ -82,30 +91,13 @@ def deletar_usuario(user_id):
     banco.session.commit()
 
     return jsonify({'message': 'Usuário deletado com sucesso'}), 200
+
+@app.route('/api/hello', methods=['GET'])
+def hello():
+    return 'Hello, World! This is your Flask API.'
     
-api.add_resource(Hoteis, '/hoteis')
-api.add_resource(Hotel, '/hoteis/<string:hotel_id>')
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
-
-
-hoteis = []
-@app.route('/hoteis', methods=['GET', 'POST'])
-def gerenciar_hoteis():
-    if request.method == 'POST':
-        # Lidar com a solicitação POST para criar um novo hotel
-        novo_hotel = request.json  # Os dados do novo hotel são enviados como JSON
-
-        # Adicione o novo hotel à lista de hotéis
-        hoteis.append(novo_hotel)
-
-        # Você pode retornar uma resposta de sucesso, se desejar
-        return jsonify({"message": "Hotel adicionado com sucesso"}), 201
-
-    elif request.method == 'GET':
-        # Lidar com a solicitação GET para obter a lista de hotéis
-        return jsonify({"hoteis": hoteis}), 200
 
 if __name__ == '__main__':
     from sql_alchemy import banco
     banco.init_app(app)
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)

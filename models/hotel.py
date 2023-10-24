@@ -1,4 +1,22 @@
 from sql_alchemy import banco
+import bcrypt
+
+
+class UserModel(banco.Model):
+    __tablename__ = 'usuarios'
+
+    id = banco.Column(banco.Integer, primary_key=True)
+    username = banco.Column(banco.String(80), unique=True, nullable=False)
+    password = banco.Column(banco.String(128), nullable=False)
+
+    def __init__(self, username, password):
+        self.username = username
+        # Gera um hash seguro da senha usando bcrypt
+        self.password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+    def check_password(self, password):
+        # Verifica se a senha fornecida corresponde ao hash armazenado
+        return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
 
 class HotelModel(banco.Model):
     __tablename__ = 'hoteis'
