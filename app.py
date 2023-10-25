@@ -65,13 +65,20 @@ def criar_usuario():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
+    confirm_password = data.get('confirm_password')
+    telefone = data.get('telefone')
+    email = data.get('email')
+
+    # Verifique se as senhas coincidem
+    if password != confirm_password:
+        return jsonify({'message': 'As senhas não coincidem'}), 400
 
     # Verifique se o usuário já existe
     if UserModel.query.filter_by(username=username).first():
         return jsonify({'message': 'Username already exists'}), 400
 
     # Crie um novo usuário com a senha seguramente armazenada
-    novo_usuario = UserModel(username=username, password=password)
+    novo_usuario = UserModel(username=username, password=password, telefone=telefone, email=email)
     banco.session.add(novo_usuario)
     banco.session.commit()
 

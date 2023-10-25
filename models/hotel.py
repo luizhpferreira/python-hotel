@@ -8,9 +8,13 @@ class UserModel(banco.Model):
     id = banco.Column(banco.Integer, primary_key=True)
     username = banco.Column(banco.String(80), unique=True, nullable=False)
     password = banco.Column(banco.String(128), nullable=False)
+    email = banco.Column(banco.String(120), unique=True, nullable=False)
+    telefone = banco.Column(banco.String(15), nullable=True)
 
-    def __init__(self, username, password):
+    def __init__(self, username, email, telefone, password):
         self.username = username
+        self.email = email
+        self.telefone = telefone
         # Gera um hash seguro da senha usando bcrypt
         self.password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
