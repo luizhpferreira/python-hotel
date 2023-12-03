@@ -12,7 +12,7 @@ Também é possível rodar a aplicação em um container Docker.
 
 Para criar um hotel eu criei um token de autenticação, só é possível criar um novoHotel se o token estiver atualizado!
 
-OBS: Também criei um front-end simples que recebe as informações do back-end está localizado no [Python-front-end](https://github.com/luizhpferreira/front-end)
+OBS: Também criei um front-end simples usando React que recebe as informações do back-end está localizado no [Python-front-end](https://github.com/luizhpferreira/front-end)
 - Crie um ambiente virtual
 - Necessário instalar pip install Flask==2.2.5
 - Para rodar a API em um container digite "docker-compose build e docker-compose up"
