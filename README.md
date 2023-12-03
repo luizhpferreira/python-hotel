@@ -1,4 +1,3 @@
-# python-hotel
 #Este é um projeto pessoal que criei do zero!
 
 Nele eu crio um CRUD de um hotel com (GET, POST, PUT E DELETE).
