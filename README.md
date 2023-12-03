@@ -6,3 +6,4 @@ O SQLite já vem por default no python
 
 - Crie um ambiente virtual
 - Necessário instalar pip install Flask==2.2.5
+- Para rodar a API em um container digite "docker-compose build e docker-compose up"
