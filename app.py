@@ -99,9 +99,7 @@ def deletar_usuario(user_id):
 
     return jsonify({'message': 'Usuário deletado com sucesso'}), 200
 
-@app.route('/api/hello', methods=['GET'])
-def hello():
-    return 'Hello, World! This is your Flask API.'
+
     
 
 if __name__ == '__main__':
