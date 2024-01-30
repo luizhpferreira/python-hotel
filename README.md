@@ -1,5 +1,6 @@
-#Este é um projeto pessoal que criei do zero!
+# Este é um projeto pessoal que criei do zero!
 
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 Nele eu crio um CRUD de um hotel com (GET, POST, PUT E DELETE).
 
 Também usei o banco de dados SQLAlchemy que recebe os valores dos hoteis e também do login de usuários.
